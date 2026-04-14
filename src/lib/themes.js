@@ -53,6 +53,42 @@ export const themes = [
     accentHue: 38,
     swatch: 'bg-amber-500',
   },
+  {
+    id: 'coral',
+    name: 'Coral',
+    accent: '#f97316',
+    accentLight: '#fb923c',
+    accentRgb: '249, 115, 22',
+    accentHue: 25,
+    swatch: 'bg-orange-500',
+  },
+  {
+    id: 'cyan',
+    name: 'Cyan',
+    accent: '#06b6d4',
+    accentLight: '#22d3ee',
+    accentRgb: '6, 182, 212',
+    accentHue: 190,
+    swatch: 'bg-cyan-500',
+  },
+  {
+    id: 'lime',
+    name: 'Lime',
+    accent: '#84cc16',
+    accentLight: '#a3e635',
+    accentRgb: '132, 204, 22',
+    accentHue: 80,
+    swatch: 'bg-lime-500',
+  },
+  {
+    id: 'fuchsia',
+    name: 'Fuchsia',
+    accent: '#d946ef',
+    accentLight: '#e879f9',
+    accentRgb: '217, 70, 239',
+    accentHue: 294,
+    swatch: 'bg-fuchsia-500',
+  },
 ]
 
 const STORAGE_KEY = 'mcodev-theme'
