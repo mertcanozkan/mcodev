@@ -196,6 +196,7 @@ export default function Contact() {
                 id="name"
                 name="name"
                 type="text"
+                suppressHydrationWarning
                 value={form.name}
                 onChange={handleChange}
                 placeholder="Your name"
@@ -223,6 +224,7 @@ export default function Contact() {
                 id="email"
                 name="email"
                 type="email"
+                suppressHydrationWarning
                 value={form.email}
                 onChange={handleChange}
                 placeholder="you@example.com"
@@ -250,6 +252,7 @@ export default function Contact() {
                 id="phone"
                 name="phone"
                 type="tel"
+                suppressHydrationWarning
                 value={form.phone}
                 onChange={handleChange}
                 placeholder="+44 7700 900000"
@@ -276,6 +279,7 @@ export default function Contact() {
               <textarea
                 id="message"
                 name="message"
+                suppressHydrationWarning
                 rows="5"
                 value={form.message}
                 onChange={handleChange}
