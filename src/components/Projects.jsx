@@ -1,58 +1,256 @@
-import { ExternalLink } from 'lucide-react'
+import { useState, useCallback, useEffect, useRef } from 'react'
+import { ArrowUpRight } from 'lucide-react'
 import { GithubIcon } from './icons'
-import { GlowCard } from '@/components/ui/spotlight-card'
 
 const projects = [
   {
+    id: '01',
     title: 'Lumina Dashboard',
+    category: 'SaaS Analytics',
+    year: '2024',
     desc: 'A real-time analytics dashboard with dynamic charts, dark mode, and responsive data visualisation for SaaS teams.',
     tags: ['React', 'TypeScript', 'Tailwind CSS', 'Recharts'],
-    gradient: 'from-blue-500/20 via-purple-500/10 to-cyan-500/20',
-    accent: 'bg-blue-400/20',
-    live: '#',
+    bar: '#60a5fa',
+    previewBg: 'linear-gradient(145deg, #0c1829 0%, #070d18 100%)',
+    preview: 'dashboard',
+    live: '/lumina-dashboard/index.html',
     github: '#',
   },
   {
+    id: '02',
     title: 'Meridian Studio',
+    category: 'Creative Agency',
+    year: '2024',
     desc: 'A premium creative agency landing page featuring smooth scroll animations, parallax effects, and a refined editorial layout.',
     tags: ['Next.js', 'Tailwind CSS', 'Framer Motion'],
-    gradient: 'from-amber-500/20 via-orange-500/10 to-rose-500/20',
-    accent: 'bg-amber-400/20',
+    bar: '#fb923c',
+    previewBg: 'linear-gradient(145deg, #1f0d04 0%, #100600 100%)',
+    preview: 'agency',
     live: '#',
     github: '#',
   },
   {
+    id: '03',
     title: 'Pulse E-Commerce',
+    category: 'Online Store',
+    year: '2024',
     desc: 'A modern storefront with product filtering, cart functionality, responsive grid, and seamless checkout experience.',
     tags: ['React', 'JavaScript', 'CSS Modules', 'Stripe'],
-    gradient: 'from-emerald-500/20 via-teal-500/10 to-cyan-500/20',
-    accent: 'bg-emerald-400/20',
+    bar: '#34d399',
+    previewBg: 'linear-gradient(145deg, #051a10 0%, #020d08 100%)',
+    preview: 'ecommerce',
     live: '#',
     github: '#',
   },
   {
+    id: '04',
     title: 'DevFolio Pro',
+    category: 'Developer Tool',
+    year: '2024',
     desc: 'A developer portfolio template with blog integration, project showcase, dark/light themes, and CMS-ready architecture.',
     tags: ['Next.js', 'MDX', 'Tailwind CSS'],
-    gradient: 'from-violet-500/20 via-fuchsia-500/10 to-pink-500/20',
-    accent: 'bg-violet-400/20',
+    bar: '#a78bfa',
+    previewBg: 'linear-gradient(145deg, #110820 0%, #080410 100%)',
+    preview: 'portfolio',
     live: '#',
     github: '#',
   },
 ]
 
+function PreviewShapes({ type, color }) {
+  const c = (alpha) => {
+    const hex = Math.round(alpha * 255).toString(16).padStart(2, '0')
+    return `${color}${hex}`
+  }
+
+  if (type === 'dashboard') {
+    return (
+      <div className="absolute inset-0 flex gap-2 p-3">
+        <div className="w-[20%] flex flex-col gap-1.5 rounded-xl p-2" style={{ background: c(0.07), border: `1px solid ${c(0.12)}` }}>
+          <div className="h-2 w-8 rounded-full" style={{ background: c(0.55) }} />
+          <div className="mt-1 space-y-1.5">
+            {[80, 60, 70, 55, 65].map((w, i) => (
+              <div key={i} className="h-1.5 rounded-full" style={{ width: `${w}%`, background: i === 0 ? c(0.6) : c(0.2) }} />
+            ))}
+          </div>
+        </div>
+        <div className="flex flex-1 flex-col gap-2">
+          <div className="grid grid-cols-3 gap-2">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="rounded-xl p-2" style={{ background: c(0.1), border: `1px solid ${c(0.16)}` }}>
+                <div className="mb-1.5 h-1.5 w-6 rounded-full" style={{ background: c(0.35) }} />
+                <div className="h-3 w-8 rounded-sm" style={{ background: c(0.55) }} />
+              </div>
+            ))}
+          </div>
+          <div className="flex-1 rounded-xl p-2.5" style={{ background: c(0.07), border: `1px solid ${c(0.11)}` }}>
+            <div className="mb-2 h-1.5 w-12 rounded-full" style={{ background: c(0.3) }} />
+            <div className="flex h-[4.5rem] items-end gap-0.5">
+              {[38, 62, 48, 82, 55, 74, 42, 90, 58, 70, 78, 95].map((h, i) => (
+                <div
+                  key={i}
+                  className="flex-1 rounded-t-sm"
+                  style={{ height: `${h}%`, background: i % 4 === 2 ? c(0.72) : c(0.3) }}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (type === 'agency') {
+    return (
+      <div className="absolute inset-0 flex items-center">
+        <div className="flex w-[55%] flex-col gap-3 p-6">
+          <div className="h-1.5 w-14 rounded-full" style={{ background: c(0.6) }} />
+          <div className="space-y-1.5">
+            <div className="h-5 w-48 rounded-sm" style={{ background: c(0.5) }} />
+            <div className="h-5 w-36 rounded-sm" style={{ background: c(0.35) }} />
+          </div>
+          <div className="space-y-1">
+            {[100, 82, 64].map((w, i) => (
+              <div key={i} className="h-1.5 rounded-full" style={{ width: `${w}%`, background: c(0.2) }} />
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <div className="h-7 w-24 rounded-full" style={{ background: c(0.38), border: `1px solid ${c(0.5)}` }} />
+            <div className="h-7 w-16 rounded-full" style={{ background: c(0.1), border: `1px solid ${c(0.25)}` }} />
+          </div>
+        </div>
+        <div className="h-full w-[45%] p-3 pl-0">
+          <div className="relative h-full overflow-hidden rounded-xl" style={{ background: `linear-gradient(135deg, ${c(0.22)}, ${c(0.08)})`, border: `1px solid ${c(0.18)}` }}>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="h-14 w-14 rotate-12 rounded-2xl" style={{ background: c(0.32) }} />
+              <div className="absolute bottom-3 right-3 h-5 w-5 rounded-lg" style={{ background: c(0.45) }} />
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (type === 'ecommerce') {
+    return (
+      <div className="absolute inset-0 p-3">
+        <div className="mb-2 flex items-center gap-2 px-1">
+          <div className="h-2 w-8 rounded-full" style={{ background: c(0.55) }} />
+          <div className="ml-auto flex gap-2">
+            {[0, 1, 2, 3].map((i) => (
+              <div key={i} className="h-1.5 w-5 rounded-full" style={{ background: c(0.22) }} />
+            ))}
+          </div>
+        </div>
+        <div className="grid h-[calc(100%-24px)] grid-cols-3 gap-2">
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              className="flex flex-col overflow-hidden rounded-xl"
+              style={{ background: c(0.09), border: `1px solid ${c(0.16)}` }}
+            >
+              <div className="flex flex-1 items-center justify-center" style={{ background: `linear-gradient(135deg, ${c(0.22)}, ${c(0.1)})` }}>
+                <div className="h-6 w-6 rounded-lg" style={{ background: c(0.42) }} />
+              </div>
+              <div className="space-y-1 p-1.5">
+                <div className="h-1.5 w-full rounded-full" style={{ background: c(0.28) }} />
+                <div className="h-1.5 w-10 rounded-full" style={{ background: c(0.5) }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  if (type === 'portfolio') {
+    return (
+      <div className="absolute inset-0 flex">
+        <div className="flex w-1/2 flex-col justify-center gap-3 p-5">
+          <div className="h-1.5 w-12 rounded-full" style={{ background: c(0.55) }} />
+          <div className="space-y-1.5">
+            <div className="h-6 w-full rounded-sm" style={{ background: c(0.45) }} />
+            <div className="h-6 w-4/5 rounded-sm" style={{ background: c(0.3) }} />
+          </div>
+          <div className="space-y-1">
+            {[100, 85].map((w, i) => (
+              <div key={i} className="h-1.5 rounded-full" style={{ width: `${w}%`, background: c(0.18) }} />
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <div className="h-6 w-20 rounded-full" style={{ background: c(0.4) }} />
+            <div className="h-6 w-14 rounded-full" style={{ background: c(0.12), border: `1px solid ${c(0.28)}` }} />
+          </div>
+        </div>
+        <div className="flex w-1/2 flex-col justify-center gap-2 p-3 pl-0">
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              className="flex items-center gap-2 rounded-xl px-3 py-2"
+              style={{ background: c(i === 0 ? 0.18 : 0.08), border: `1px solid ${c(i === 0 ? 0.28 : 0.12)}`, opacity: 1 - i * 0.18 }}
+            >
+              <div className="h-5 w-5 shrink-0 rounded-md" style={{ background: c(0.4) }} />
+              <div className="flex-1 space-y-1">
+                <div className="h-1.5 w-full rounded-full" style={{ background: c(0.32) }} />
+                <div className="h-1 w-3/4 rounded-full" style={{ background: c(0.18) }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  return null
+}
+
 export default function Projects() {
+  const [activeIdx, setActiveIdx] = useState(0)
+  const [visible, setVisible] = useState(true)
+  const timeoutRef = useRef(null)
+
+  const select = useCallback((idx) => {
+    if (idx === activeIdx) return
+    setVisible(false)
+    clearTimeout(timeoutRef.current)
+    timeoutRef.current = setTimeout(() => {
+      setActiveIdx(idx)
+      setVisible(true)
+    }, 165)
+  }, [activeIdx])
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') select((activeIdx + 1) % projects.length)
+      if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') select((activeIdx - 1 + projects.length) % projects.length)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [activeIdx, select])
+
+  useEffect(() => () => clearTimeout(timeoutRef.current), [])
+
+  const active = projects[activeIdx]
+
   return (
-    <section id="projects" className="relative py-28 px-6 lg:py-36" aria-labelledby="projects-heading">
+    <section
+      id="projects"
+      className="relative py-28 px-6 lg:py-36"
+      aria-labelledby="projects-heading"
+    >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-      <div className="pointer-events-none absolute left-0 top-40 h-96 w-96 rounded-full bg-accent/3 blur-[120px]" />
+      <div className="pointer-events-none absolute right-0 top-40 h-96 w-96 rounded-full bg-accent/3 blur-[120px]" />
 
       <div className="mx-auto max-w-6xl">
-        <div className="text-center">
+        {/* Header */}
+        <div className="mb-16 text-center">
           <p className="animate-fade-up mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-accent">
             Portfolio
           </p>
-          <h2 id="projects-heading" className="animate-fade-up font-display text-3xl font-bold sm:text-4xl lg:text-5xl">
+          <h2
+            id="projects-heading"
+            className="animate-fade-up font-display text-3xl font-bold sm:text-4xl lg:text-5xl"
+          >
             Featured <span className="text-gradient">Projects</span>
           </h2>
           <p className="animate-fade-up mx-auto mt-5 max-w-xl text-text-secondary">
@@ -60,55 +258,179 @@ export default function Projects() {
           </p>
         </div>
 
-        <div className="mt-16 grid gap-8 md:grid-cols-2">
-          {projects.map(({ title, desc, tags, gradient, accent, live, github }, i) => (
-            <GlowCard
-              key={title}
-              className="animate-fade-up group"
-              style={{ animationDelay: `${i * 100}ms` }}
-            >
-              {/* Decorative thumbnail */}
-              <div className={`relative h-52 overflow-hidden bg-gradient-to-br ${gradient}`}>
-                {/* Decorative shapes */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className={`absolute left-8 top-8 h-20 w-20 rounded-2xl ${accent} rotate-12 transition-transform duration-500 group-hover:rotate-45 group-hover:scale-110`} />
-                  <div className={`absolute right-12 top-12 h-14 w-14 rounded-full ${accent} transition-transform duration-500 group-hover:scale-125`} />
-                  <div className={`absolute bottom-8 left-1/3 h-16 w-32 rounded-xl ${accent} -rotate-6 transition-transform duration-500 group-hover:rotate-3`} />
-                  <div className="relative z-10 rounded-xl border border-white/10 bg-black/20 px-5 py-3 backdrop-blur-sm">
-                    <span className="font-mono text-sm text-white/70">&lt;{title} /&gt;</span>
-                  </div>
-                </div>
+        {/* Split layout */}
+        <div className="animate-fade-up flex flex-col gap-4 lg:flex-row lg:gap-6">
 
-                {/* Hover overlay with action buttons */}
-                <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                <div className="absolute bottom-4 right-4 z-20 flex gap-2 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2">
-                  <a
-                    href={live}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Live demo of ${title}`}
-                    className="rounded-full bg-accent p-2.5 text-midnight transition-transform hover:scale-110"
+          {/* Left: project rail */}
+          <div className="glass-light overflow-hidden rounded-2xl lg:w-[38%]">
+            {projects.map((p, i) => {
+              const isActive = i === activeIdx
+              return (
+                <button
+                  key={p.id}
+                  onClick={() => select(i)}
+                  className={`group relative flex w-full items-center gap-4 border-b border-border px-6 py-5 text-left transition-all duration-200 last:border-0 ${isActive ? 'bg-accent/8' : 'hover:bg-surface-light'}`}
+                >
+                  {isActive && (
+                    <span className="absolute inset-y-0 left-0 w-[3px] rounded-r-full bg-accent" />
+                  )}
+
+                  <span
+                    className={`w-7 shrink-0 font-mono text-[11px] transition-colors ${isActive ? 'text-accent' : 'text-text-muted'}`}
                   >
-                    <ExternalLink size={16} />
-                  </a>
-                  <a
-                    href={github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`GitHub repository for ${title}`}
-                    className="rounded-full bg-surface-lighter p-2.5 text-text-primary transition-transform hover:scale-110"
+                    {p.id}
+                  </span>
+
+                  <span
+                    className="h-2 w-2 shrink-0 rounded-full transition-all duration-300"
+                    style={{
+                      background: isActive ? p.bar : 'var(--color-surface-lighter)',
+                      boxShadow: isActive ? `0 0 8px ${p.bar}90` : 'none',
+                    }}
+                  />
+
+                  <div className="min-w-0 flex-1">
+                    <span
+                      className={`block truncate text-sm font-semibold transition-colors duration-200 ${isActive ? 'text-text-primary' : 'text-text-secondary group-hover:text-text-primary'}`}
+                    >
+                      {p.title}
+                    </span>
+                    <span className="mt-0.5 block text-xs text-text-muted">
+                      {p.category} · {p.year}
+                    </span>
+                  </div>
+
+                  {/* Mini preview swatch */}
+                  <div
+                    className="hidden h-9 w-14 shrink-0 overflow-hidden rounded-lg sm:block"
+                    style={{ background: p.previewBg }}
                   >
-                    <GithubIcon size={16} />
-                  </a>
+                    <div
+                      className="h-full w-full transition-opacity duration-200"
+                      style={{
+                        background: `radial-gradient(circle at 60% 40%, ${p.bar}55, transparent 72%)`,
+                        opacity: isActive ? 1 : 0.6,
+                      }}
+                    />
+                  </div>
+
+                  {isActive && (
+                    <svg
+                      className="ml-1 shrink-0 text-accent"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                  )}
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Right: detail panel */}
+          <div className="lg:w-[62%]">
+            <div
+              className="glass-light overflow-hidden rounded-2xl"
+              style={{
+                opacity: visible ? 1 : 0,
+                transform: visible ? 'translateX(0) scale(1)' : 'translateX(10px) scale(0.995)',
+                transition: 'opacity 0.2s ease, transform 0.2s ease',
+              }}
+            >
+              {/* Browser chrome */}
+              <div className="flex items-center gap-3 border-b border-border/50 bg-surface/50 px-4 py-2.5">
+                <div className="flex gap-1.5">
+                  <div className="h-2.5 w-2.5 rounded-full bg-red-400/50" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-yellow-400/50" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-green-400/50" />
+                </div>
+                <div className="flex flex-1 items-center gap-1.5 rounded-md border border-border/40 bg-surface/80 px-3 py-1">
+                  <svg
+                    width="9"
+                    height="9"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    className="shrink-0 text-text-muted"
+                    aria-hidden="true"
+                  >
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0110 0v4" />
+                  </svg>
+                  <span className="truncate font-mono text-[10px] text-text-muted">
+                    mcodev.co.uk/{active.live !== '#' ? active.live.replace('/index.html','').replace(/^\//,'') : active.title.toLowerCase().replace(/\s+/g, '-')}
+                  </span>
+                </div>
+                <div className="flex gap-1">
+                  {['M15 18l-6-6 6-6', 'M9 18l6-6-6-6'].map((d, i) => (
+                    <div
+                      key={i}
+                      className="flex h-4 w-4 items-center justify-center rounded border border-border/40 bg-surface"
+                    >
+                      <svg width="7" height="7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-text-muted" aria-hidden="true">
+                        <path d={d} />
+                      </svg>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              <div className="p-6">
-                <h3 className="mb-2 text-lg font-bold text-text-primary group-hover:text-accent transition-colors duration-300">{title}</h3>
-                <p className="mb-4 text-sm leading-relaxed text-text-secondary">{desc}</p>
-                <div className="flex items-end justify-between gap-4">
-                  <div className="flex flex-wrap gap-2">
-                    {tags.map((tag) => (
+              {/* Preview viewport */}
+              <div
+                className="relative h-52 overflow-hidden"
+                style={{ background: active.previewBg }}
+              >
+                <div
+                  className="absolute inset-0"
+                  style={{ background: `radial-gradient(ellipse at 70% 30%, ${active.bar}22, transparent 65%)` }}
+                />
+                <PreviewShapes type={active.preview} color={active.bar} />
+                <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-black/40 to-transparent" />
+              </div>
+
+              {/* Content */}
+              <div className="relative p-7 lg:p-8">
+                {/* Decorative backdrop number */}
+                <span
+                  className="pointer-events-none absolute -bottom-3 -right-1 select-none font-display font-bold leading-none"
+                  style={{ fontSize: 'clamp(5rem, 12vw, 8.5rem)', color: `${active.bar}14` }}
+                  aria-hidden="true"
+                >
+                  {active.id}
+                </span>
+
+                <div className="relative">
+                  {/* Category badge + year */}
+                  <div className="mb-3 flex items-center gap-2.5">
+                    <span
+                      className="rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-widest"
+                      style={{ background: `${active.bar}1a`, color: active.bar }}
+                    >
+                      {active.category}
+                    </span>
+                    <span className="font-mono text-[10px] text-text-muted">· {active.year}</span>
+                  </div>
+
+                  <h3 className="font-display text-2xl font-bold text-text-primary lg:text-[1.75rem]">
+                    {active.title}
+                  </h3>
+
+                  <p className="mb-6 mt-3 max-w-[44ch] text-sm leading-relaxed text-text-secondary">
+                    {active.desc}
+                  </p>
+
+                  {/* Tags */}
+                  <div className="mb-7 flex flex-wrap gap-2">
+                    {active.tags.map((tag) => (
                       <span
                         key={tag}
                         className="rounded-md border border-border bg-surface px-2.5 py-1 text-[11px] font-medium text-text-muted"
@@ -117,30 +439,56 @@ export default function Projects() {
                       </span>
                     ))}
                   </div>
-                  <div className="flex shrink-0 gap-2 lg:hidden">
+
+                  {/* CTAs */}
+                  <div className="flex flex-wrap items-center gap-3">
                     <a
-                      href={live}
+                      href={active.live}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label={`Live demo of ${title}`}
-                      className="rounded-full bg-accent p-2 text-midnight transition-transform hover:scale-110"
+                      className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold text-midnight transition-all duration-300"
+                      style={{ background: active.bar }}
+                      onMouseEnter={(e) => { e.currentTarget.style.boxShadow = `0 8px 28px ${active.bar}45` }}
+                      onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'none' }}
                     >
-                      <ExternalLink size={14} />
+                      Live Demo <ArrowUpRight size={15} />
                     </a>
                     <a
-                      href={github}
+                      href={active.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label={`GitHub repository for ${title}`}
-                      className="rounded-full bg-surface-lighter p-2 text-text-primary transition-transform hover:scale-110"
+                      className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-2.5 text-sm font-medium text-text-secondary transition-all duration-300 hover:border-accent/40 hover:text-text-primary"
                     >
-                      <GithubIcon size={14} />
+                      <GithubIcon size={15} /> Source
                     </a>
                   </div>
                 </div>
               </div>
-            </GlowCard>
-          ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Progress dots + counter */}
+        <div className="mt-5 flex items-center justify-between">
+          <div className="flex gap-1.5" role="tablist" aria-label="Project navigation">
+            {projects.map((_, i) => (
+              <button
+                key={i}
+                role="tab"
+                aria-selected={i === activeIdx}
+                aria-label={`View project ${i + 1}`}
+                onClick={() => select(i)}
+                className="h-1 rounded-full transition-all duration-300"
+                style={{
+                  width: i === activeIdx ? '2rem' : '0.5rem',
+                  background: i === activeIdx ? 'var(--color-accent)' : 'var(--color-border)',
+                }}
+              />
+            ))}
+          </div>
+          <span className="font-mono text-[11px] text-text-muted">
+            {activeIdx + 1} / {projects.length}
+          </span>
         </div>
       </div>
     </section>

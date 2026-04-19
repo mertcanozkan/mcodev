@@ -4,13 +4,15 @@ import { themes, applyTheme, getDefaultTheme } from '@/lib/themes'
 
 export default function ThemeSwitcher() {
   const [open, setOpen] = useState(false)
-  const [active, setActive] = useState(() => getDefaultTheme())
+  const [active, setActive] = useState(themes[0])
   const panelRef = useRef(null)
   const btnRef = useRef(null)
 
-  // Apply stored theme on mount
+  // Read stored theme after hydration to avoid SSR mismatch
   useEffect(() => {
-    applyTheme(active)
+    const stored = getDefaultTheme()
+    setActive(stored)
+    applyTheme(stored)
   }, [])
 
   // Close on outside click
