@@ -47,6 +47,12 @@
       "static/chunks/_app-pages-browser_node_modules_splinetool_runtime_build_ui_js.js"
     ]
   },
+  "app/page.jsx -> @/components/Contact": {
+    "id": "app/page.jsx -> @/components/Contact",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_Contact_jsx.js"
+    ]
+  },
   "components/ui/splite.jsx -> @splinetool/react-spline": {
     "id": "components/ui/splite.jsx -> @splinetool/react-spline",
     "files": [

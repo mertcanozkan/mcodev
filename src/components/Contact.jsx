@@ -185,7 +185,7 @@ export default function Contact() {
               </div>
             )}
 
-            <div>
+            <div suppressHydrationWarning>
               <label
                 htmlFor="name"
                 className="mb-1.5 block text-sm font-medium text-text-secondary"
@@ -213,7 +213,7 @@ export default function Contact() {
               )}
             </div>
 
-            <div>
+            <div suppressHydrationWarning>
               <label
                 htmlFor="email"
                 className="mb-1.5 block text-sm font-medium text-text-secondary"
@@ -241,7 +241,7 @@ export default function Contact() {
               )}
             </div>
 
-            <div>
+            <div suppressHydrationWarning>
               <label
                 htmlFor="phone"
                 className="mb-1.5 block text-sm font-medium text-text-secondary"
@@ -269,7 +269,7 @@ export default function Contact() {
               )}
             </div>
 
-            <div>
+            <div suppressHydrationWarning>
               <label
                 htmlFor="message"
                 className="mb-1.5 block text-sm font-medium text-text-secondary"
