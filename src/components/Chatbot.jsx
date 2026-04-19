@@ -444,7 +444,7 @@ export default function Chatbot() {
     if (!isOpen) return
     const handler = (e) => {
       if (chatRef.current && !chatRef.current.contains(e.target) && !e.target.closest('.cb-float-btn')) {
-        handleClose()
+        setIsOpen(false)
       }
     }
     document.addEventListener('mousedown', handler)
@@ -579,7 +579,7 @@ export default function Chatbot() {
         {/* Floating button */}
         <button
           className="cb-float-btn"
-          onClick={() => isOpen ? handleClose() : setIsOpen(true)}
+          onClick={() => setIsOpen(o => !o)}
           aria-label={isOpen ? 'Close chat' : 'Chat with Angela'}
           style={{
             width: 60, height: 60, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.2)',

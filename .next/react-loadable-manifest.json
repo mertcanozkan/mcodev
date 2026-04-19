@@ -1,63 +1,62 @@
 {
   "../node_modules/@splinetool/runtime/build/runtime.js -> ./boolean.js": {
-    "id": 4070,
+    "id": "../node_modules/@splinetool/runtime/build/runtime.js -> ./boolean.js",
     "files": [
-      "static/chunks/70.a590be3c8317e760.js"
+      "static/chunks/_app-pages-browser_node_modules_splinetool_runtime_build_boolean_js.js"
     ]
   },
   "../node_modules/@splinetool/runtime/build/runtime.js -> ./gaussian-splat-compression.js": {
-    "id": 2415,
+    "id": "../node_modules/@splinetool/runtime/build/runtime.js -> ./gaussian-splat-compression.js",
     "files": [
-      "static/chunks/415.a5fcaf09bd8413e4.js"
+      "static/chunks/_app-pages-browser_node_modules_splinetool_runtime_build_gaussian-splat-compression_js.js"
     ]
   },
   "../node_modules/@splinetool/runtime/build/runtime.js -> ./howler.js": {
-    "id": 1719,
+    "id": "../node_modules/@splinetool/runtime/build/runtime.js -> ./howler.js",
     "files": [
-      "static/chunks/719.bea1c33d5c32ab48.js"
+      "static/chunks/_app-pages-browser_node_modules_splinetool_runtime_build_howler_js.js"
     ]
   },
   "../node_modules/@splinetool/runtime/build/runtime.js -> ./navmesh.js": {
-    "id": 1358,
+    "id": "../node_modules/@splinetool/runtime/build/runtime.js -> ./navmesh.js",
     "files": [
-      "static/chunks/977.65f7503f8fe1e5de.js"
+      "static/chunks/_app-pages-browser_node_modules_splinetool_runtime_build_navmesh_js.js"
     ]
   },
   "../node_modules/@splinetool/runtime/build/runtime.js -> ./opentype.js": {
-    "id": 5706,
+    "id": "../node_modules/@splinetool/runtime/build/runtime.js -> ./opentype.js",
     "files": [
-      "static/chunks/a0e187c9.08aefc72720b3945.js"
+      "static/chunks/_app-pages-browser_node_modules_splinetool_runtime_build_opentype_js.js"
     ]
   },
   "../node_modules/@splinetool/runtime/build/runtime.js -> ./physics.js": {
-    "id": 7895,
+    "id": "../node_modules/@splinetool/runtime/build/runtime.js -> ./physics.js",
     "files": [
-      "static/chunks/0b60df10.7639ef983b429a6d.js"
+      "static/chunks/_app-pages-browser_node_modules_splinetool_runtime_build_physics_js.js"
     ]
   },
   "../node_modules/@splinetool/runtime/build/runtime.js -> ./process.js": {
-    "id": 9067,
+    "id": "../node_modules/@splinetool/runtime/build/runtime.js -> ./process.js",
     "files": [
-      "static/chunks/67.5c05679db650a83d.js"
+      "static/chunks/_app-pages-browser_node_modules_splinetool_runtime_build_process_js.js"
     ]
   },
   "../node_modules/@splinetool/runtime/build/runtime.js -> ./ui.js": {
-    "id": 9424,
+    "id": "../node_modules/@splinetool/runtime/build/runtime.js -> ./ui.js",
     "files": [
-      "static/chunks/424.6909a3f857b04a11.js"
+      "static/chunks/_app-pages-browser_node_modules_splinetool_runtime_build_ui_js.js"
     ]
   },
   "app/page.jsx -> @/components/Contact": {
-    "id": 2123,
+    "id": "app/page.jsx -> @/components/Contact",
     "files": [
-      "static/chunks/123.f46a7b89df10451c.js"
+      "static/chunks/_app-pages-browser_src_components_Contact_jsx.js"
     ]
   },
   "components/ui/splite.jsx -> @splinetool/react-spline": {
-    "id": 9397,
+    "id": "components/ui/splite.jsx -> @splinetool/react-spline",
     "files": [
-      "static/chunks/c6a54c64.afe0e029ec0bdae0.js",
-      "static/chunks/304.aef3cfb13ac61704.js"
+      "static/chunks/_app-pages-browser_node_modules_splinetool_react-spline_dist_react-spline_js.js"
     ]
   }
 }
