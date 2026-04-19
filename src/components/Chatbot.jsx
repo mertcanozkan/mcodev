@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { Bot, X, Send, Info, Mail, Trash2, User } from 'lucide-react'
 
-const WEBHOOK_URL = import.meta.env.VITE_CHATBOT_WEBHOOK_URL || ''
+const WEBHOOK_URL = process.env.NEXT_PUBLIC_CHATBOT_WEBHOOK_URL || ''
 
 const WELCOME_MESSAGE = { text: 'Hello! 👋 Welcome to MCODev. How can I help you today?', sender: 'bot' }
 

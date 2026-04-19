@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Send, Mail, MapPin } from "lucide-react";
 import { GithubIcon, LinkedinIcon, TwitterIcon } from "./icons";
 
-const CONTACT_WEBHOOK_URL = import.meta.env.VITE_CONTACT_WEBHOOK_URL || "";
+const CONTACT_WEBHOOK_URL = process.env.NEXT_PUBLIC_CONTACT_WEBHOOK_URL || "";
 
 export default function Contact() {
   const [form, setForm] = useState({
