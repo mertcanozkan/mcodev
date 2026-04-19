@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { Bot, X, Send, Mail, Trash2, User, ArrowRight, Loader2, MessageSquare, Shield } from 'lucide-react'
 
 const WEBHOOK_URL = process.env.NEXT_PUBLIC_CHATBOT_WEBHOOK_URL || ''
+const TRANSCRIPT_WEBHOOK_URL = process.env.NEXT_PUBLIC_TRANSCRIPT_WEBHOOK_URL || ''
 
 function validateEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -529,10 +530,19 @@ export default function Chatbot() {
     if (!userInfo || messages.length === 0 || emailStatus === 'sending') return
     setEmailStatus('sending')
     try {
-      const res = await fetch('/api/send-transcript', {
+      const transcript = messages
+        .map((m) => `${m.sender === 'bot' ? 'Angela' : userInfo.firstName}: ${m.text}`)
+        .join('\n\n')
+      const res = await fetch(TRANSCRIPT_WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to: userInfo.email, firstName: userInfo.firstName, messages }),
+        body: JSON.stringify({
+          type: 'transcript',
+          to: userInfo.email,
+          firstName: userInfo.firstName,
+          lastName: userInfo.lastName,
+          transcript,
+        }),
       })
       setEmailStatus(res.ok ? 'success' : 'error')
     } catch (err) {
