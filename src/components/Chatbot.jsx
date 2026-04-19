@@ -54,20 +54,27 @@ function IdentForm({ onIdentified }) {
     try {
       const res = await fetch(WEBHOOK_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'firstName': form.firstName.trim(),
-          'lastName': form.lastName.trim(),
-          'email': form.email.trim(),
-        },
-        body: JSON.stringify({ message: '__identify__' }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: '__identify__',
+          firstName: form.firstName.trim(),
+          lastName: form.lastName.trim(),
+          email: form.email.trim(),
+        }),
       })
 
-      const data = await res.json()
-      const reply =
-        typeof data === 'string'
-          ? data
-          : data.reply || data.message || data.response || data.output || data.text || null
+      const raw = await res.text()
+      let reply = null
+      if (raw.trim()) {
+        try {
+          const data = JSON.parse(raw)
+          reply = typeof data === 'string'
+            ? data
+            : data.reply || data.message || data.response || data.output || data.text || null
+        } catch {
+          reply = raw.trim() || null
+        }
+      }
 
       onIdentified(
         { firstName: form.firstName.trim(), lastName: form.lastName.trim(), email: form.email.trim() },
@@ -230,21 +237,29 @@ export default function Chatbot() {
     try {
       const res = await fetch(WEBHOOK_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'firstName': userInfo.firstName,
-          'lastName': userInfo.lastName,
-          'email': userInfo.email,
-        },
-        body: JSON.stringify({ message: text }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: text,
+          firstName: userInfo.firstName,
+          lastName: userInfo.lastName,
+          email: userInfo.email,
+        }),
       })
 
       if (!res.ok) throw new Error(`Status ${res.status}`)
-      const data = await res.json()
-      const botReply =
-        typeof data === 'string'
-          ? data
-          : data.reply || data.message || data.response || data.output || data.text || JSON.stringify(data)
+      const raw = await res.text()
+      let botReply = null
+      if (raw.trim()) {
+        try {
+          const data = JSON.parse(raw)
+          botReply = typeof data === 'string'
+            ? data
+            : data.reply || data.message || data.response || data.output || data.text || JSON.stringify(data)
+        } catch {
+          botReply = raw.trim()
+        }
+      }
+      if (!botReply) botReply = "I've received your message. I'll get back to you shortly."
 
       setIsTyping(false)
       setMessages((prev) => [...prev, { text: botReply, sender: 'bot' }])
@@ -274,9 +289,9 @@ export default function Chatbot() {
 
   const handleEmailTranscript = () => {
     const transcript = messages
-      .map((m) => `${m.sender === 'bot' ? 'MCODev Assistant' : 'You'}: ${m.text}`)
+      .map((m) => `${m.sender === 'bot' ? 'Angela' : 'You'}: ${m.text}`)
       .join('\n\n')
-    window.open(`mailto:?subject=${encodeURIComponent('MCODev Chat Transcript')}&body=${encodeURIComponent(transcript)}`, '_self')
+    window.open(`mailto:?subject=${encodeURIComponent('Angela — MCODev Chat Transcript')}&body=${encodeURIComponent(transcript)}`, '_self')
     setEmailSent(true)
     setTimeout(() => setEmailSent(false), 3000)
   }
@@ -321,7 +336,7 @@ export default function Chatbot() {
           className="absolute bottom-20 right-0 w-[min(420px,calc(100vw-24px))] transition-all duration-300 origin-bottom-right"
           style={{ animation: 'cb-popIn 0.3s cubic-bezier(0.175,0.885,0.32,1.275) forwards' }}
           role="dialog"
-          aria-label="Chat with MCODev Assistant"
+          aria-label="Chat with Angela"
         >
           <div className="relative flex flex-col rounded-3xl bg-gradient-to-br from-zinc-800/80 to-zinc-900/90 border border-zinc-500/50 shadow-2xl backdrop-blur-xl overflow-hidden max-h-[min(600px,calc(100dvh-140px))]">
 
@@ -330,7 +345,7 @@ export default function Chatbot() {
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                 <span className="text-xs font-medium text-zinc-400">
-                  MCODev Assistant
+                  Angela
                   {userInfo && (
                     <span className="ml-1.5 text-zinc-500">· {userInfo.firstName}</span>
                   )}
