@@ -37,6 +37,11 @@ export const metadata = {
   keywords: ['front end developer', 'React developer', 'Next.js', 'web development', 'London', 'UI developer', 'TypeScript'],
   authors: [{ name: 'Mert Ozkan', url: BASE_URL }],
   creator: 'Mert Ozkan',
+  manifest: '/manifest.webmanifest',
+  icons: {
+    icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
+  },
   robots: {
     index: true,
     follow: true,
@@ -67,14 +72,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html
-      lang="en"
+      lang="en-GB"
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      suppressHydrationWarning
     >
       <head>
-        <link
-          rel="icon"
-          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -103,13 +105,36 @@ export default function RootLayout({ children }) {
                   name: 'MCODev',
                   description: 'Front end developer portfolio — Mert Ozkan, London',
                   author: { '@id': `${BASE_URL}/#person` },
+                  inLanguage: 'en-GB',
+                },
+                {
+                  '@type': 'ProfessionalService',
+                  '@id': `${BASE_URL}/#service`,
+                  name: 'MCODev — Front End Development',
+                  url: BASE_URL,
+                  image: `${BASE_URL}/og-image.png`,
+                  provider: { '@id': `${BASE_URL}/#person` },
+                  areaServed: [
+                    { '@type': 'City', name: 'London' },
+                    { '@type': 'Country', name: 'United Kingdom' },
+                    { '@type': 'Place', name: 'Worldwide (remote)' },
+                  ],
+                  serviceType: [
+                    'Landing Page Development',
+                    'Business Website Development',
+                    'Responsive Design',
+                    'UI Implementation',
+                    'Website Redesign',
+                    'Performance Optimisation',
+                  ],
+                  priceRange: '££',
                 },
               ],
             }),
           }}
         />
       </head>
-      <body>{children}</body>
+      <body suppressHydrationWarning>{children}</body>
     </html>
   )
 }

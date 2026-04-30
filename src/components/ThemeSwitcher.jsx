@@ -65,7 +65,7 @@ export default function ThemeSwitcher() {
             ? 'scale-100 opacity-100 visible'
             : 'scale-95 opacity-0 invisible pointer-events-none'
         }`}
-        role="listbox"
+        role="menu"
         aria-label="Colour themes"
       >
         <p className="mb-2.5 px-1 text-[10px] font-bold uppercase tracking-[0.15em] text-text-muted">
@@ -76,8 +76,8 @@ export default function ThemeSwitcher() {
             <button
               key={theme.id}
               onClick={() => selectTheme(theme)}
-              role="option"
-              aria-selected={active.id === theme.id}
+              role="menuitemradio"
+              aria-checked={active.id === theme.id}
               className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-all duration-200 ${
                 active.id === theme.id
                   ? 'bg-white/5 text-text-primary'
@@ -85,12 +85,13 @@ export default function ThemeSwitcher() {
               }`}
             >
               <span
+                aria-hidden="true"
                 className="h-4 w-4 shrink-0 rounded-full shadow-inner"
                 style={{ backgroundColor: theme.accent }}
               />
               <span className="flex-1">{theme.name}</span>
               {active.id === theme.id && (
-                <Check size={14} className="shrink-0" style={{ color: theme.accent }} />
+                <Check size={14} className="shrink-0" style={{ color: theme.accent }} aria-hidden="true" />
               )}
             </button>
           ))}

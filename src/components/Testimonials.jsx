@@ -42,10 +42,10 @@ export default function Testimonials() {
               style={{ animationDelay: `${i * 100}ms` }}
             >
               <div className="mb-4 flex items-center justify-between">
-                <Quote size={28} className="text-accent/40" />
-                <div className="flex gap-0.5">
+                <Quote size={28} className="text-accent/40" aria-hidden="true" />
+                <div className="flex gap-0.5" role="img" aria-label="Rated 5 out of 5 stars">
                   {Array.from({ length: 5 }).map((_, si) => (
-                    <Star key={si} size={14} className="fill-amber-400 text-amber-400" />
+                    <Star key={si} size={14} className="fill-amber-400 text-amber-400" aria-hidden="true" />
                   ))}
                 </div>
               </div>

@@ -5,37 +5,94 @@ import { GithubIcon } from './icons'
 const projects = [
   {
     id: '01',
-    title: 'Lumina Dashboard',
-    category: 'SaaS Analytics',
+    title: 'Lattice',
+    category: 'Education / Bootcamp',
     year: '2024',
-    desc: 'A real-time analytics dashboard with dynamic charts, dark mode, and responsive data visualisation for SaaS teams.',
-    tags: ['React', 'TypeScript', 'Tailwind CSS', 'Recharts'],
-    bar: '#60a5fa',
-    previewBg: 'linear-gradient(145deg, #0c1829 0%, #070d18 100%)',
-    preview: 'dashboard',
-    live: '/lumina-dashboard/index.html',
+    desc: 'A typography-led marketing site for Lattice — a twelve-week atelier teaching the craft of software across six engineering tracks. Editorial layout, restrained motion, and an emphasis on readable code as a teaching philosophy.',
+    tags: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'],
+    bar: '#bef264',
+    previewBg: 'linear-gradient(145deg, #0a0a08 0%, #020202 100%)',
+    preview: 'agency',
+    thumbnail: '/projects/lattice.jpg',
+    live: 'https://lattice-gilt.vercel.app',
     github: '#',
   },
   {
     id: '02',
-    title: 'Meridian Studio',
-    category: 'Creative Agency',
+    title: 'Mariyam Driving School',
+    category: 'Local Service',
     year: '2024',
-    desc: 'A premium creative agency landing page featuring smooth scroll animations, parallax effects, and a refined editorial layout.',
-    tags: ['Next.js', 'Tailwind CSS', 'Framer Motion'],
-    bar: '#fb923c',
-    previewBg: 'linear-gradient(145deg, #1f0d04 0%, #100600 100%)',
+    desc: 'A DVSA-approved driving school site for the London market — built around an editorial hero, theme switching, transparent course pricing, and a Google Maps-powered booking flow designed for nervous first-time learners.',
+    tags: ['Next.js', 'React', 'Tailwind CSS', 'Google Maps API'],
+    bar: '#f5b842',
+    previewBg: 'linear-gradient(145deg, #0d1729 0%, #060b14 100%)',
     preview: 'agency',
-    live: '#',
+    thumbnail: '/projects/mariyam.jpg',
+    live: 'https://mariyamds.vercel.app',
     github: '#',
   },
   {
     id: '03',
-    title: 'Pulse E-Commerce',
-    category: 'Online Store',
+    title: 'Cunda Batı Balık',
+    category: 'Hospitality / Restaurant',
     year: '2024',
-    desc: 'A modern storefront with product filtering, cart functionality, responsive grid, and seamless checkout experience.',
-    tags: ['React', 'JavaScript', 'CSS Modules', 'Stripe'],
+    desc: 'A bilingual (EN/TR) editorial site for a heritage Aegean fish restaurant on Alibey Island — large display typography over underwater motion, day-boat menu, and a reservation flow woven into the narrative rather than bolted on.',
+    tags: ['Next.js', 'React', 'Tailwind CSS', 'i18n'],
+    bar: '#e76d4a',
+    previewBg: 'linear-gradient(145deg, #0a1419 0%, #050a0e 100%)',
+    preview: 'agency',
+    thumbnail: '/projects/cunda.jpg',
+    live: 'https://cunda-bati-balik.vercel.app',
+    github: '#',
+  },
+  {
+    id: '04',
+    title: 'MCO Store',
+    category: 'E-Commerce / Lifestyle',
+    year: '2026',
+    status: 'Still Under Development',
+    desc: 'A small-batch e-commerce concept for considered home and desk objects — editorial product narrative, three intent-led collections (Desk, Home, Ritual), and a Journal that documents process. Built around restraint, large display serif, and a warm neutral palette.',
+    tags: ['Next.js', 'React', 'Tailwind CSS', 'next/image'],
+    bar: '#c89668',
+    previewBg: 'linear-gradient(145deg, #f3ede2 0%, #e8ddc9 100%)',
+    preview: 'ecommerce',
+    thumbnail: '/projects/mcostore.jpg',
+    live: 'https://mco-store.vercel.app',
+    github: '#',
+  },
+  {
+    id: '05',
+    title: 'Project 05',
+    category: 'Coming Soon',
+    year: '2026',
+    desc: 'A new build is taking shape — full case study landing soon.',
+    tags: ['TBA'],
+    bar: '#60a5fa',
+    previewBg: 'linear-gradient(145deg, #0c1829 0%, #070d18 100%)',
+    preview: 'dashboard',
+    live: '#',
+    github: '#',
+  },
+  {
+    id: '06',
+    title: 'Project 06',
+    category: 'Coming Soon',
+    year: '2026',
+    desc: 'A new build is taking shape — full case study landing soon.',
+    tags: ['TBA'],
+    bar: '#a78bfa',
+    previewBg: 'linear-gradient(145deg, #110820 0%, #080410 100%)',
+    preview: 'portfolio',
+    live: '#',
+    github: '#',
+  },
+  {
+    id: '07',
+    title: 'Project 07',
+    category: 'Coming Soon',
+    year: '2026',
+    desc: 'A new build is taking shape — full case study landing soon.',
+    tags: ['TBA'],
     bar: '#34d399',
     previewBg: 'linear-gradient(145deg, #051a10 0%, #020d08 100%)',
     preview: 'ecommerce',
@@ -43,15 +100,15 @@ const projects = [
     github: '#',
   },
   {
-    id: '04',
-    title: 'DevFolio Pro',
-    category: 'Developer Tool',
-    year: '2024',
-    desc: 'A developer portfolio template with blog integration, project showcase, dark/light themes, and CMS-ready architecture.',
-    tags: ['Next.js', 'MDX', 'Tailwind CSS'],
-    bar: '#a78bfa',
-    previewBg: 'linear-gradient(145deg, #110820 0%, #080410 100%)',
-    preview: 'portfolio',
+    id: '08',
+    title: 'Project 08',
+    category: 'Coming Soon',
+    year: '2026',
+    desc: 'A new build is taking shape — full case study landing soon.',
+    tags: ['TBA'],
+    bar: '#fb923c',
+    previewBg: 'linear-gradient(145deg, #1f0d04 0%, #100600 100%)',
+    preview: 'agency',
     live: '#',
     github: '#',
   },
@@ -291,9 +348,16 @@ export default function Projects() {
 
                   <div className="min-w-0 flex-1">
                     <span
-                      className={`block truncate text-sm font-semibold transition-colors duration-200 ${isActive ? 'text-text-primary' : 'text-text-secondary group-hover:text-text-primary'}`}
+                      className={`flex items-center gap-2 truncate text-sm font-semibold transition-colors duration-200 ${isActive ? 'text-text-primary' : 'text-text-secondary group-hover:text-text-primary'}`}
                     >
-                      {p.title}
+                      <span className="truncate">{p.title}</span>
+                      {p.status && (
+                        <span
+                          aria-hidden="true"
+                          className="h-1.5 w-1.5 shrink-0 rounded-full bg-amber-300 motion-safe:animate-pulse"
+                          title={p.status}
+                        />
+                      )}
                     </span>
                     <span className="mt-0.5 block text-xs text-text-muted">
                       {p.category} · {p.year}
@@ -305,13 +369,25 @@ export default function Projects() {
                     className="hidden h-9 w-14 shrink-0 overflow-hidden rounded-lg sm:block"
                     style={{ background: p.previewBg }}
                   >
-                    <div
-                      className="h-full w-full transition-opacity duration-200"
-                      style={{
-                        background: `radial-gradient(circle at 60% 40%, ${p.bar}55, transparent 72%)`,
-                        opacity: isActive ? 1 : 0.6,
-                      }}
-                    />
+                    {p.thumbnail ? (
+                      <img
+                        src={p.thumbnail}
+                        alt=""
+                        aria-hidden="true"
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover object-top transition-opacity duration-200"
+                        style={{ opacity: isActive ? 1 : 0.6 }}
+                      />
+                    ) : (
+                      <div
+                        className="h-full w-full transition-opacity duration-200"
+                        style={{
+                          background: `radial-gradient(circle at 60% 40%, ${p.bar}55, transparent 72%)`,
+                          opacity: isActive ? 1 : 0.6,
+                        }}
+                      />
+                    )}
                   </div>
 
                   {isActive && (
@@ -367,7 +443,16 @@ export default function Projects() {
                     <path d="M7 11V7a5 5 0 0110 0v4" />
                   </svg>
                   <span className="truncate font-mono text-[10px] text-text-muted">
-                    mcodev.co.uk/{active.live !== '#' ? active.live.replace('/index.html','').replace(/^\//,'') : active.title.toLowerCase().replace(/\s+/g, '-')}
+                    {(() => {
+                      const live = active.live
+                      if (live && /^https?:\/\//i.test(live)) {
+                        return live.replace(/^https?:\/\//i, '').replace(/\/$/, '')
+                      }
+                      const slug = live && live !== '#'
+                        ? live.replace('/index.html', '').replace(/^\//, '')
+                        : active.title.toLowerCase().replace(/\s+/g, '-')
+                      return `mcodev.uk/${slug}`
+                    })()}
                   </span>
                 </div>
                 <div className="flex gap-1">
@@ -389,11 +474,23 @@ export default function Projects() {
                 className="relative h-52 overflow-hidden"
                 style={{ background: active.previewBg }}
               >
-                <div
-                  className="absolute inset-0"
-                  style={{ background: `radial-gradient(ellipse at 70% 30%, ${active.bar}22, transparent 65%)` }}
-                />
-                <PreviewShapes type={active.preview} color={active.bar} />
+                {active.thumbnail ? (
+                  <img
+                    src={active.thumbnail}
+                    alt={`${active.title} — site preview`}
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 h-full w-full object-cover object-top"
+                  />
+                ) : (
+                  <>
+                    <div
+                      className="absolute inset-0"
+                      style={{ background: `radial-gradient(ellipse at 70% 30%, ${active.bar}22, transparent 65%)` }}
+                    />
+                    <PreviewShapes type={active.preview} color={active.bar} />
+                  </>
+                )}
                 <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-black/40 to-transparent" />
               </div>
 
@@ -409,8 +506,8 @@ export default function Projects() {
                 </span>
 
                 <div className="relative">
-                  {/* Category badge + year */}
-                  <div className="mb-3 flex items-center gap-2.5">
+                  {/* Category badge + year + status */}
+                  <div className="mb-3 flex flex-wrap items-center gap-2.5">
                     <span
                       className="rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-widest"
                       style={{ background: `${active.bar}1a`, color: active.bar }}
@@ -418,6 +515,18 @@ export default function Projects() {
                       {active.category}
                     </span>
                     <span className="font-mono text-[10px] text-text-muted">· {active.year}</span>
+                    {active.status && (
+                      <span
+                        className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-amber-300"
+                        role="status"
+                      >
+                        <span
+                          aria-hidden="true"
+                          className="h-1.5 w-1.5 rounded-full bg-amber-300 motion-safe:animate-pulse"
+                        />
+                        {active.status}
+                      </span>
+                    )}
                   </div>
 
                   <h3 className="font-display text-2xl font-bold text-text-primary lg:text-[1.75rem]">
@@ -442,25 +551,36 @@ export default function Projects() {
 
                   {/* CTAs */}
                   <div className="flex flex-wrap items-center gap-3">
-                    <a
-                      href={active.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold text-midnight transition-all duration-300"
-                      style={{ background: active.bar }}
-                      onMouseEnter={(e) => { e.currentTarget.style.boxShadow = `0 8px 28px ${active.bar}45` }}
-                      onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'none' }}
-                    >
-                      Live Demo <ArrowUpRight size={15} />
-                    </a>
-                    <a
-                      href={active.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-2.5 text-sm font-medium text-text-secondary transition-all duration-300 hover:border-accent/40 hover:text-text-primary"
-                    >
-                      <GithubIcon size={15} /> Source
-                    </a>
+                    {active.live && active.live !== '#' ? (
+                      <a
+                        href={active.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold text-midnight transition-all duration-300"
+                        style={{ background: active.bar }}
+                        onMouseEnter={(e) => { e.currentTarget.style.boxShadow = `0 8px 28px ${active.bar}45` }}
+                        onMouseLeave={(e) => { e.currentTarget.style.boxShadow = 'none' }}
+                      >
+                        Live Demo <ArrowUpRight size={15} />
+                      </a>
+                    ) : (
+                      <span
+                        className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-6 py-2.5 text-sm font-medium text-text-muted"
+                        aria-label="Live demo coming soon"
+                      >
+                        Coming Soon
+                      </span>
+                    )}
+                    {active.github && active.github !== '#' && (
+                      <a
+                        href={active.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-2.5 text-sm font-medium text-text-secondary transition-all duration-300 hover:border-accent/40 hover:text-text-primary"
+                      >
+                        <GithubIcon size={15} /> Source
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
@@ -470,13 +590,12 @@ export default function Projects() {
 
         {/* Progress dots + counter */}
         <div className="mt-5 flex items-center justify-between">
-          <div className="flex gap-1.5" role="tablist" aria-label="Project navigation">
+          <div className="flex gap-1.5" aria-label="Project navigation">
             {projects.map((_, i) => (
               <button
                 key={i}
-                role="tab"
-                aria-selected={i === activeIdx}
-                aria-label={`View project ${i + 1}`}
+                aria-label={`Show project ${i + 1} of ${projects.length}`}
+                aria-current={i === activeIdx ? 'true' : undefined}
                 onClick={() => select(i)}
                 className="h-1 rounded-full transition-all duration-300"
                 style={{
@@ -486,7 +605,7 @@ export default function Projects() {
               />
             ))}
           </div>
-          <span className="font-mono text-[11px] text-text-muted">
+          <span className="font-mono text-[11px] text-text-muted" aria-hidden="true">
             {activeIdx + 1} / {projects.length}
           </span>
         </div>

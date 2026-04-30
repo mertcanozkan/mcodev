@@ -60,6 +60,8 @@ function SkillOrb({ name, level, index, animate }) {
   return (
     <div
       className="group flex flex-col items-center gap-3"
+      role="group"
+      aria-label={`${name}: ${level}% proficiency`}
       style={{
         opacity: animate ? 1 : 0,
         transform: animate ? 'translateY(0)' : 'translateY(18px)',
@@ -105,7 +107,7 @@ function SkillOrb({ name, level, index, animate }) {
         </svg>
 
         {/* Centre % */}
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
           <span className="font-display font-bold leading-none text-gradient"
             style={{ fontSize: '1.1rem' }}>
             {level}<span style={{ fontSize: '0.65rem' }}>%</span>
@@ -114,7 +116,10 @@ function SkillOrb({ name, level, index, animate }) {
       </div>
 
       {/* Skill name */}
-      <span className="max-w-[108px] text-center text-xs font-medium leading-tight text-text-secondary transition-colors duration-200 group-hover:text-text-primary">
+      <span
+        className="max-w-[108px] text-center text-xs font-medium leading-tight text-text-secondary transition-colors duration-200 group-hover:text-text-primary"
+        aria-hidden="true"
+      >
         {name}
       </span>
     </div>
@@ -189,31 +194,49 @@ export default function Skills() {
           role="tablist"
           aria-label="Skill categories"
         >
-          {categories.map((cat, i) => (
-            <button
-              key={cat.id}
-              role="tab"
-              id={`skills-tab-${cat.id}`}
-              aria-selected={i === activeIdx}
-              aria-controls="skills-tabpanel"
-              onClick={() => selectCategory(i)}
-              className={`flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium transition-all duration-300 ${
-                i === activeIdx
-                  ? 'border-accent bg-accent text-midnight'
-                  : 'border-border text-text-secondary hover:border-accent/40 hover:text-text-primary'
-              }`}
-              style={i === activeIdx ? {
-                boxShadow: '0 4px 20px rgba(var(--color-accent-rgb), 0.3)',
-              } : {}}
-            >
-              <span
-                className={`font-mono text-[10px] ${i === activeIdx ? 'opacity-50' : 'text-text-muted'}`}
+          {categories.map((cat, i) => {
+            const isActive = i === activeIdx
+            const onTabKey = (e) => {
+              const last = categories.length - 1
+              let next = null
+              if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = i === last ? 0 : i + 1
+              else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = i === 0 ? last : i - 1
+              else if (e.key === 'Home') next = 0
+              else if (e.key === 'End') next = last
+              if (next !== null) {
+                e.preventDefault()
+                selectCategory(next)
+                document.getElementById(`skills-tab-${categories[next].id}`)?.focus()
+              }
+            }
+            return (
+              <button
+                key={cat.id}
+                role="tab"
+                id={`skills-tab-${cat.id}`}
+                aria-selected={isActive}
+                aria-controls="skills-tabpanel"
+                tabIndex={isActive ? 0 : -1}
+                onClick={() => selectCategory(i)}
+                onKeyDown={onTabKey}
+                className={`flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium transition-all duration-300 ${
+                  isActive
+                    ? 'border-accent bg-accent text-midnight'
+                    : 'border-border text-text-secondary hover:border-accent/40 hover:text-text-primary'
+                }`}
+                style={isActive ? {
+                  boxShadow: '0 4px 20px rgba(var(--color-accent-rgb), 0.3)',
+                } : {}}
               >
-                {cat.id}
-              </span>
-              {cat.short}
-            </button>
-          ))}
+                <span
+                  className={`font-mono text-[10px] ${isActive ? 'opacity-50' : 'text-text-muted'}`}
+                >
+                  {cat.id}
+                </span>
+                {cat.short}
+              </button>
+            )
+          })}
         </div>
 
         {/* Panel */}
@@ -221,7 +244,7 @@ export default function Skills() {
           id="skills-tabpanel"
           role="tabpanel"
           aria-labelledby={`skills-tab-${active.id}`}
-          aria-live="polite"
+          tabIndex={0}
           className="animate-fade-up glass-light rounded-3xl p-8 lg:p-12"
         >
           {/* Panel header */}

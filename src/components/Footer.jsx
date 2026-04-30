@@ -1,5 +1,6 @@
 import { Heart } from "lucide-react";
 import { GithubIcon, LinkedinIcon, TwitterIcon } from "./icons";
+import { scrollToHash } from "@/lib/utils";
 
 const quickLinks = [
   { label: "About", href: "#about" },
@@ -26,7 +27,7 @@ const socials = [
 export default function Footer() {
   const scrollTo = (e, href) => {
     e.preventDefault();
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    scrollToHash(href);
   };
 
   return (

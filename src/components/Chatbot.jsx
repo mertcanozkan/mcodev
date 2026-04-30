@@ -10,12 +10,6 @@ function validateEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
-function escapeHtml(text) {
-  const div = document.createElement('div')
-  div.textContent = text
-  return div.innerHTML
-}
-
 // ── Angela avatar ────────────────────────────────────────────────────────────
 function AngelaAvatar({ size = 'sm' }) {
   const dim = size === 'lg' ? 52 : size === 'md' ? 36 : 28
@@ -65,16 +59,21 @@ function IdentScreen({ onIdentified, onClose }) {
     const errs = validate()
     if (Object.keys(errs).length) { setErrors(errs); return }
     setLoading(true)
+    const trimmed = {
+      firstName: form.firstName.trim(),
+      lastName: form.lastName.trim(),
+      email: form.email.trim(),
+    }
+    if (!WEBHOOK_URL) {
+      onIdentified(trimmed, null)
+      setLoading(false)
+      return
+    }
     try {
       const res = await fetch(WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: '__identify__',
-          firstName: form.firstName.trim(),
-          lastName: form.lastName.trim(),
-          email: form.email.trim(),
-        }),
+        body: JSON.stringify({ message: '__identify__', ...trimmed }),
       })
       const raw = await res.text()
       let reply = null
@@ -85,9 +84,9 @@ function IdentScreen({ onIdentified, onClose }) {
             : data.reply || data.message || data.response || data.output || data.text || null
         } catch { reply = raw.trim() || null }
       }
-      onIdentified({ firstName: form.firstName.trim(), lastName: form.lastName.trim(), email: form.email.trim() }, reply)
+      onIdentified(trimmed, reply)
     } catch {
-      onIdentified({ firstName: form.firstName.trim(), lastName: form.lastName.trim(), email: form.email.trim() }, null)
+      onIdentified(trimmed, null)
     } finally { setLoading(false) }
   }
 
@@ -131,11 +130,15 @@ function IdentScreen({ onIdentified, onClose }) {
         padding: '16px 20px 0',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
-          <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', fontFamily: 'var(--font-body)' }}>Online now</span>
+          <div aria-hidden="true" style={{ width: 7, height: 7, borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 6px #22c55e' }} />
+          <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', fontFamily: 'var(--font-body)' }}>Online now</span>
         </div>
-        <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: 'rgba(255,255,255,0.35)', display: 'flex', borderRadius: 8 }}>
-          <X size={16} />
+        <button
+          onClick={onClose}
+          aria-label="Close chat"
+          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: 'rgba(255,255,255,0.7)', display: 'flex', borderRadius: 8 }}
+        >
+          <X size={16} aria-hidden="true" />
         </button>
       </div>
 
@@ -153,7 +156,7 @@ function IdentScreen({ onIdentified, onClose }) {
         <p style={{ fontSize: 17, fontWeight: 700, color: '#f4f4f5', fontFamily: 'var(--font-display)', lineHeight: 1.2, marginBottom: 4 }}>
           Hi, I&apos;m Angela 👋
         </p>
-        <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6, maxWidth: 260, margin: '0 auto' }}>
+        <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, maxWidth: 260, margin: '0 auto' }}>
           MCODev&apos;s AI assistant. I&apos;m here to help — let me look you up before we start.
         </p>
       </div>
@@ -191,8 +194,8 @@ function IdentScreen({ onIdentified, onClose }) {
         background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
         display: 'flex', alignItems: 'center', gap: 7,
       }}>
-        <Shield size={12} style={{ color: 'rgba(255,255,255,0.3)', flexShrink: 0 }} />
-        <span style={{ fontSize: 10.5, color: 'rgba(255,255,255,0.35)', lineHeight: 1.5 }}>
+        <Shield size={12} style={{ color: 'rgba(255,255,255,0.7)', flexShrink: 0 }} aria-hidden="true" />
+        <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', lineHeight: 1.5 }}>
           Your details are only used to personalise this conversation.
         </span>
       </div>
@@ -222,7 +225,7 @@ function ChatView({ userInfo, messages, isTyping, input, charCount, isSending, o
           </div>
           <div>
             <p style={{ fontSize: 13, fontWeight: 700, color: '#f4f4f5', fontFamily: 'var(--font-display)', lineHeight: 1.2 }}>Angela</p>
-            <p style={{ fontSize: 10.5, color: 'rgba(255,255,255,0.4)', lineHeight: 1 }}>MCODev Assistant · {userInfo.firstName}</p>
+            <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', lineHeight: 1.2 }}>MCODev Assistant · {userInfo.firstName}</p>
           </div>
         </div>
 
@@ -247,17 +250,17 @@ function ChatView({ userInfo, messages, isTyping, input, charCount, isSending, o
               style={{
                 background: emailStatus === 'success' ? 'rgba(34,197,94,0.12)'
                   : emailStatus === 'error' ? 'rgba(248,113,113,0.12)'
-                  : 'rgba(255,255,255,0.06)',
-                border: `1px solid ${emailStatus === 'success' ? 'rgba(34,197,94,0.3)' : emailStatus === 'error' ? 'rgba(248,113,113,0.3)' : 'rgba(255,255,255,0.09)'}`,
+                  : 'rgba(255,255,255,0.08)',
+                border: `1px solid ${emailStatus === 'success' ? 'rgba(34,197,94,0.3)' : emailStatus === 'error' ? 'rgba(248,113,113,0.3)' : 'rgba(255,255,255,0.18)'}`,
                 borderRadius: 8, padding: '6px 7px',
                 cursor: emailStatus === 'sending' ? 'not-allowed' : 'pointer',
-                color: emailStatus === 'success' ? '#22c55e' : emailStatus === 'error' ? '#f87171' : 'rgba(255,255,255,0.45)',
+                color: emailStatus === 'success' ? '#22c55e' : emailStatus === 'error' ? '#f87171' : 'rgba(255,255,255,0.8)',
                 display: 'flex', transition: 'all 0.2s',
               }}
             >
               {emailStatus === 'sending'
-                ? <Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} />
-                : <Mail size={14} />
+                ? <Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} aria-hidden="true" />
+                : <Mail size={14} aria-hidden="true" />
               }
             </button>
           </div>
@@ -269,14 +272,14 @@ function ChatView({ userInfo, messages, isTyping, input, charCount, isSending, o
               aria-label="End chat session"
               title="End session"
               style={{
-                background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.09)',
-                borderRadius: 8, padding: '6px 7px', cursor: 'pointer', color: 'rgba(255,255,255,0.45)',
+                background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.18)',
+                borderRadius: 8, padding: '6px 7px', cursor: 'pointer', color: 'rgba(255,255,255,0.8)',
                 display: 'flex', transition: 'all 0.2s',
               }}
               onMouseEnter={e => { e.currentTarget.style.background = 'rgba(248,113,113,0.12)'; e.currentTarget.style.color = '#f87171'; e.currentTarget.style.borderColor = 'rgba(248,113,113,0.25)' }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.color = 'rgba(255,255,255,0.45)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)' }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = 'rgba(255,255,255,0.8)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)' }}
             >
-              <X size={14} />
+              <X size={14} aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -316,8 +319,6 @@ function ChatView({ userInfo, messages, isTyping, input, charCount, isSending, o
         {messages.map((msg, i) => (
           <div
             key={i}
-            role="article"
-            aria-label={msg.sender === 'bot' ? `Angela: ${msg.text}` : `You: ${msg.text}`}
             style={{
               display: 'flex', gap: 9, alignSelf: msg.sender === 'bot' ? 'flex-start' : 'flex-end',
               flexDirection: msg.sender === 'bot' ? 'row' : 'row-reverse',
@@ -329,40 +330,42 @@ function ChatView({ userInfo, messages, isTyping, input, charCount, isSending, o
               : (
                 <div aria-hidden="true" style={{
                   width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
-                  background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)',
+                  background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.18)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  <User size={13} style={{ color: 'rgba(255,255,255,0.6)' }} />
+                  <User size={13} style={{ color: 'rgba(255,255,255,0.8)' }} aria-hidden="true" />
                 </div>
               )
             }
             <div
-              aria-hidden="true"
               style={{
                 padding: '10px 14px', fontSize: 13, lineHeight: 1.6, borderRadius: 16,
                 borderBottomLeftRadius: msg.sender === 'bot' ? 4 : 16,
                 borderBottomRightRadius: msg.sender === 'user' ? 4 : 16,
+                whiteSpace: 'pre-wrap', wordBreak: 'break-word',
                 ...(msg.sender === 'bot'
-                  ? { background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.09)', color: '#e4e4e7' }
+                  ? { background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)', color: '#e4e4e7' }
                   : { background: `linear-gradient(135deg, var(--color-accent), rgba(139,92,246,0.9))`, color: '#fff', boxShadow: `0 3px 12px rgba(var(--color-accent-rgb),0.25)` }
                 ),
               }}
-              dangerouslySetInnerHTML={{ __html: escapeHtml(msg.text) }}
-            />
+            >
+              <span className="sr-only">{msg.sender === 'bot' ? 'Angela said:' : 'You said:'} </span>
+              {msg.text}
+            </div>
           </div>
         ))}
 
         {isTyping && (
           <div role="status" aria-label="Angela is typing" style={{ display: 'flex', gap: 9, alignSelf: 'flex-start', maxWidth: '85%', animation: 'cb-msgIn 0.3s ease both' }}>
             <AngelaAvatar size="sm" />
-            <div style={{
+            <div aria-hidden="true" style={{
               padding: '12px 16px', borderRadius: 16, borderBottomLeftRadius: 4,
-              background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.09)',
+              background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)',
               display: 'flex', gap: 5, alignItems: 'center',
             }}>
               {[0, 0.18, 0.36].map((delay, i) => (
                 <span key={i} style={{
-                  width: 6, height: 6, borderRadius: '50%', background: 'rgba(255,255,255,0.4)',
+                  width: 6, height: 6, borderRadius: '50%', background: 'rgba(255,255,255,0.7)',
                   animation: `cb-bounce 1.3s ease-in-out ${delay}s infinite`,
                   display: 'block',
                 }} />
@@ -392,6 +395,7 @@ function ChatView({ userInfo, messages, isTyping, input, charCount, isSending, o
             onKeyDown={onKeyDown}
             rows={1}
             aria-label="Message Angela"
+            aria-describedby="cb-input-hint cb-char-count"
             placeholder="Message Angela…"
             style={{
               flex: 1, background: 'none', border: 'none', outline: 'none', resize: 'none',
@@ -408,27 +412,33 @@ function ChatView({ userInfo, messages, isTyping, input, charCount, isSending, o
               width: 34, height: 34, borderRadius: 10, border: 'none', flexShrink: 0,
               background: input.trim() && !isSending
                 ? `linear-gradient(135deg, var(--color-accent), rgba(139,92,246,0.9))`
-                : 'rgba(255,255,255,0.08)',
+                : 'rgba(255,255,255,0.12)',
               cursor: isSending || !input.trim() ? 'not-allowed' : 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: input.trim() && !isSending ? '#fff' : 'rgba(255,255,255,0.3)',
+              color: input.trim() && !isSending ? '#fff' : 'rgba(255,255,255,0.6)',
               transition: 'all 0.2s', boxShadow: input.trim() && !isSending ? `0 3px 10px rgba(var(--color-accent-rgb),0.35)` : 'none',
             }}
             onMouseEnter={e => { if (input.trim() && !isSending) e.currentTarget.style.transform = 'translateY(-1px) scale(1.05)' }}
             onMouseLeave={e => { e.currentTarget.style.transform = 'none' }}
           >
-            {isSending ? <Loader2 size={15} style={{ animation: 'spin 1s linear infinite' }} /> : <Send size={14} />}
+            {isSending
+              ? <Loader2 size={15} style={{ animation: 'spin 1s linear infinite' }} aria-hidden="true" />
+              : <Send size={14} aria-hidden="true" />}
           </button>
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 8, padding: '0 2px' }}>
-          <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-mono)' }}>
+          <span id="cb-input-hint" style={{ fontSize: 10, color: 'rgba(255,255,255,0.65)', fontFamily: 'var(--font-mono)' }}>
             ⏎ send · ⇧⏎ newline
           </span>
-          <span style={{
-            fontSize: 10, color: charCount > maxChars * 0.9 ? '#f87171' : 'rgba(255,255,255,0.2)',
-            fontFamily: 'var(--font-mono)',
-          }}>
+          <span
+            id="cb-char-count"
+            aria-live="polite"
+            style={{
+              fontSize: 10, color: charCount > maxChars * 0.9 ? '#f87171' : 'rgba(255,255,255,0.65)',
+              fontFamily: 'var(--font-mono)',
+            }}
+          >
             {charCount}/{maxChars}
           </span>
         </div>
@@ -476,6 +486,41 @@ export default function Chatbot() {
     return () => document.removeEventListener('mousedown', handler)
   }, [isOpen])
 
+  // Focus trap + Escape close + restore focus on close
+  useEffect(() => {
+    if (!isOpen) return
+    const previouslyFocused = document.activeElement
+    const onKey = (e) => {
+      if (e.key === 'Escape') {
+        e.stopPropagation()
+        setIsOpen(false)
+        return
+      }
+      if (e.key !== 'Tab' || !chatRef.current) return
+      const focusable = chatRef.current.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
+      if (!focusable.length) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      const active = document.activeElement
+      if (e.shiftKey && (active === first || !chatRef.current.contains(active))) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      if (previouslyFocused && typeof previouslyFocused.focus === 'function') {
+        previouslyFocused.focus()
+      }
+    }
+  }, [isOpen])
+
   const handleClose = () => {
     setIsOpen(false)
     setTimeout(() => {
@@ -505,6 +550,14 @@ export default function Chatbot() {
     if (inputRef.current) inputRef.current.style.height = 'auto'
     setMessages((prev) => [...prev, { text, sender: 'user' }])
     setIsTyping(true)
+
+    if (!WEBHOOK_URL) {
+      setIsTyping(false)
+      setMessages((prev) => [...prev, { text: "I'm offline right now — please reach me through the contact form below.", sender: 'bot' }])
+      setIsSending(false)
+      inputRef.current?.focus()
+      return
+    }
 
     try {
       const res = await fetch(WEBHOOK_URL, {
@@ -553,6 +606,11 @@ export default function Chatbot() {
 
   const handleEmailTranscript = async () => {
     if (!userInfo || messages.length === 0 || emailStatus === 'sending') return
+    if (!TRANSCRIPT_WEBHOOK_URL) {
+      setEmailStatus('error')
+      setTimeout(() => setEmailStatus('idle'), 5000)
+      return
+    }
     setEmailStatus('sending')
     try {
       const transcript = messages
@@ -621,11 +679,11 @@ export default function Chatbot() {
             opacity: 0.4,
           }} />
           {isOpen
-            ? <X size={24} color="#fff" style={{ position: 'relative', zIndex: 1 }} />
-            : <Bot size={26} color="#fff" style={{ position: 'relative', zIndex: 1 }} />
+            ? <X size={24} color="#fff" aria-hidden="true" style={{ position: 'relative', zIndex: 1 }} />
+            : <Bot size={26} color="#fff" aria-hidden="true" style={{ position: 'relative', zIndex: 1 }} />
           }
           {!isOpen && (
-            <div style={{
+            <div aria-hidden="true" style={{
               position: 'absolute', inset: 0, borderRadius: '50%',
               background: 'var(--color-accent)', opacity: 0.18,
               animation: 'cb-bounce 2s ease-in-out infinite',

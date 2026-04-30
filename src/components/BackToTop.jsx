@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { ArrowUp } from 'lucide-react'
+import { smoothScrollBehavior } from '@/lib/utils'
 
 export default function BackToTop() {
   const [visible, setVisible] = useState(false)
@@ -11,14 +12,14 @@ export default function BackToTop() {
   }, [])
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.scrollTo({ top: 0, behavior: smoothScrollBehavior() })
   }
 
   return (
     <button
       onClick={scrollToTop}
       aria-label="Back to top"
-      className={`fixed bottom-8 right-8 z-40 rounded-full border border-border bg-surface p-3 text-text-secondary shadow-lg shadow-black/20 transition-all duration-300 hover:border-accent/50 hover:text-accent ${
+      className={`fixed bottom-8 left-8 z-40 rounded-full border border-border bg-surface p-3 text-text-secondary shadow-lg shadow-black/20 transition-all duration-300 hover:border-accent/50 hover:text-accent ${
         visible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0 pointer-events-none'
       }`}
     >

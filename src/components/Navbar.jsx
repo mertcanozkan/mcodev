@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
 import ThemeSwitcher from './ThemeSwitcher'
+import { scrollToHash } from '@/lib/utils'
 
 const navLinks = [
   { label: 'About', href: '#about' },
@@ -50,7 +51,7 @@ export default function Navbar() {
   const handleClick = (e, href) => {
     e.preventDefault()
     setMobileOpen(false)
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+    scrollToHash(href)
   }
 
   return (

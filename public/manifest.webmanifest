@@ -1,0 +1,23 @@
+{
+  "name": "MCODev — Front End Developer",
+  "short_name": "MCODev",
+  "description": "Front end developer building beautiful, high-performance web experiences with React, Next.js, and modern UI development.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#0a0a0f",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    }
+  ]
+}

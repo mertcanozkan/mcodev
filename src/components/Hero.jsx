@@ -2,6 +2,7 @@ import { ArrowDown } from 'lucide-react'
 import { GithubIcon, LinkedinIcon, TwitterIcon } from './icons'
 import { SplineScene } from '@/components/ui/splite'
 import { Spotlight } from '@/components/ui/spotlight'
+import { scrollToHash } from '@/lib/utils'
 
 function CodeTerminal() {
   return (
@@ -81,7 +82,7 @@ function CodeTerminal() {
 export default function Hero() {
   const scrollTo = (e, id) => {
     e.preventDefault()
-    document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' })
+    scrollToHash(id)
   }
 
   return (
@@ -161,9 +162,9 @@ export default function Hero() {
 
           <div className="animate-fade-up mt-12 flex items-center justify-center gap-5 lg:justify-start" style={{ animationDelay: '400ms' }}>
             {[
-              { icon: GithubIcon, href: 'https://github.com', label: 'GitHub' },
-              { icon: LinkedinIcon, href: 'https://linkedin.com', label: 'LinkedIn' },
-              { icon: TwitterIcon, href: 'https://twitter.com', label: 'X / Twitter' },
+              { icon: GithubIcon, href: 'https://github.com/mertcanozkan', label: 'GitHub' },
+              { icon: LinkedinIcon, href: 'https://www.linkedin.com/in/mcodev/', label: 'LinkedIn' },
+              { icon: TwitterIcon, href: 'https://x.com/MCODevUK', label: 'X / Twitter' },
             ].map(({ icon: Icon, href, label }) => (
               <a
                 key={label}
@@ -189,7 +190,7 @@ export default function Hero() {
         href="#about"
         onClick={(e) => scrollTo(e, '#about')}
         aria-label="Scroll to about section"
-        className="pointer-events-auto absolute bottom-10 left-1/2 z-10 -translate-x-1/2 animate-bounce text-text-muted transition-colors hover:text-accent"
+        className="pointer-events-auto absolute bottom-10 left-1/2 z-10 -translate-x-1/2 animate-bounce text-text-muted transition-colors hover:text-accent motion-reduce:animate-none"
       >
         <ArrowDown size={22} />
       </a>

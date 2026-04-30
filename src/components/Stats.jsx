@@ -91,16 +91,20 @@ function StatRing({ value, suffix, label, fillPct, index }) {
         </svg>
 
         {/* Centre readout */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <div className="absolute inset-0 flex flex-col items-center justify-center" aria-hidden="true">
           <span className="font-display text-[1.6rem] font-bold leading-none text-gradient">
             {count}{suffix}
           </span>
         </div>
       </div>
 
+      <span className="sr-only">
+        {value}{suffix} {label}
+      </span>
       <p
         className="mt-2 text-center text-sm font-medium leading-snug text-text-secondary"
         style={{ maxWidth: 112 }}
+        aria-hidden="true"
       >
         {label}
       </p>
