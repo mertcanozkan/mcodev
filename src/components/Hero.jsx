@@ -91,7 +91,7 @@ export default function Hero() {
       aria-label="Introduction"
     >
       {/* Spline 3D background — receives mouse events for head tracking */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0" aria-hidden="true">
         <SplineScene
           scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
           className="w-full h-full"
@@ -109,7 +109,7 @@ export default function Hero() {
       />
 
       {/* Background decorative effects */}
-      <div className="pointer-events-none absolute inset-0 z-[2]">
+      <div className="pointer-events-none absolute inset-0 z-[2]" aria-hidden="true">
         <div className="absolute left-1/3 top-1/4 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/5 blur-[120px]" />
         <div className="absolute right-1/4 bottom-1/3 h-[400px] w-[400px] rounded-full bg-purple-500/3 blur-[100px]" />
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
@@ -180,7 +180,7 @@ export default function Hero() {
         </div>
 
         {/* Terminal visual column */}
-        <div className="pointer-events-auto animate-fade-up hidden lg:flex lg:justify-end" style={{ animationDelay: '500ms' }}>
+        <div className="pointer-events-auto animate-fade-up hidden lg:flex lg:justify-end" style={{ animationDelay: '500ms' }} aria-hidden="true">
           <CodeTerminal />
         </div>
       </div>

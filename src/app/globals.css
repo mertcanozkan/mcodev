@@ -167,6 +167,19 @@
     opacity: 0.5;
   }
 
+  /* Respect reduced-motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    html { scroll-behavior: auto; }
+    .animate-fade-up { opacity: 1; transform: none; }
+    .animate-fade-up.visible { animation: none; opacity: 1; transform: none; }
+  }
+
   /* Chatbot animations */
   @keyframes cb-popIn {
     0% { opacity: 0; transform: scale(0.8) translateY(20px); }

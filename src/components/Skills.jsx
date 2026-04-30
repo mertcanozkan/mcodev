@@ -193,7 +193,9 @@ export default function Skills() {
             <button
               key={cat.id}
               role="tab"
+              id={`skills-tab-${cat.id}`}
               aria-selected={i === activeIdx}
+              aria-controls="skills-tabpanel"
               onClick={() => selectCategory(i)}
               className={`flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium transition-all duration-300 ${
                 i === activeIdx
@@ -215,7 +217,13 @@ export default function Skills() {
         </div>
 
         {/* Panel */}
-        <div className="animate-fade-up glass-light rounded-3xl p-8 lg:p-12">
+        <div
+          id="skills-tabpanel"
+          role="tabpanel"
+          aria-labelledby={`skills-tab-${active.id}`}
+          aria-live="polite"
+          className="animate-fade-up glass-light rounded-3xl p-8 lg:p-12"
+        >
           {/* Panel header */}
           <div className="mb-10 flex items-center justify-between border-b border-border pb-6">
             <div>

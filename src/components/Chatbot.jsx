@@ -91,14 +91,22 @@ function IdentScreen({ onIdentified, onClose }) {
     } finally { setLoading(false) }
   }
 
+  const labels = { firstName: 'First name', lastName: 'Last name', email: 'Email address' }
+
   const field = (name, placeholder, type = 'text', ref = undefined) => (
     <div style={{ position: 'relative' }}>
+      <label htmlFor={`angela-${name}`} style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap' }}>
+        {labels[name]}
+      </label>
       <input
         ref={ref}
+        id={`angela-${name}`}
         type={type}
         placeholder={placeholder}
         value={form[name]}
         onChange={handleChange(name)}
+        aria-invalid={!!errors[name]}
+        aria-describedby={errors[name] ? `angela-${name}-err` : undefined}
         autoComplete={type === 'email' ? 'email' : name === 'firstName' ? 'given-name' : 'family-name'}
         style={{
           width: '100%', padding: '10px 14px', fontSize: '13px', borderRadius: 12,
@@ -110,7 +118,7 @@ function IdentScreen({ onIdentified, onClose }) {
         onBlur={e => { e.target.style.borderColor = errors[name] ? 'rgba(248,113,113,0.5)' : 'rgba(255,255,255,0.1)' }}
       />
       {errors[name] && (
-        <p style={{ fontSize: 10, color: '#f87171', marginTop: 3, paddingLeft: 2 }}>{errors[name]}</p>
+        <p id={`angela-${name}-err`} role="alert" style={{ fontSize: 10, color: '#f87171', marginTop: 3, paddingLeft: 2 }}>{errors[name]}</p>
       )}
     </div>
   )
@@ -161,6 +169,7 @@ function IdentScreen({ onIdentified, onClose }) {
         <button
           type="submit"
           disabled={loading}
+          aria-busy={loading}
           style={{
             marginTop: 4, padding: '11px 0', borderRadius: 12, border: 'none', cursor: loading ? 'not-allowed' : 'pointer',
             background: `linear-gradient(135deg, var(--color-accent), rgba(139,92,246,0.9))`,
@@ -223,6 +232,12 @@ function ChatView({ userInfo, messages, isTyping, input, charCount, isSending, o
             <button
               onClick={onEmailTranscript}
               disabled={emailStatus === 'sending'}
+              aria-label={
+                emailStatus === 'sending' ? 'Sending transcript…'
+                : emailStatus === 'success' ? 'Transcript sent!'
+                : emailStatus === 'error' ? 'Failed to send transcript — try again'
+                : 'Email chat transcript to me'
+              }
               title={
                 emailStatus === 'sending' ? 'Sending…'
                 : emailStatus === 'success' ? 'Transcript sent!'
@@ -251,6 +266,7 @@ function ChatView({ userInfo, messages, isTyping, input, charCount, isSending, o
           <div style={{ position: 'relative' }}>
             <button
               onClick={onEndSession}
+              aria-label="End chat session"
               title="End session"
               style={{
                 background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.09)',
@@ -288,6 +304,9 @@ function ChatView({ userInfo, messages, isTyping, input, charCount, isSending, o
       {/* Messages */}
       <div
         ref={messagesRef}
+        aria-live="polite"
+        aria-relevant="additions"
+        aria-label="Chat messages"
         style={{
           flex: 1, overflowY: 'auto', padding: '16px 18px',
           display: 'flex', flexDirection: 'column', gap: 12,
@@ -297,6 +316,8 @@ function ChatView({ userInfo, messages, isTyping, input, charCount, isSending, o
         {messages.map((msg, i) => (
           <div
             key={i}
+            role="article"
+            aria-label={msg.sender === 'bot' ? `Angela: ${msg.text}` : `You: ${msg.text}`}
             style={{
               display: 'flex', gap: 9, alignSelf: msg.sender === 'bot' ? 'flex-start' : 'flex-end',
               flexDirection: msg.sender === 'bot' ? 'row' : 'row-reverse',
@@ -306,7 +327,7 @@ function ChatView({ userInfo, messages, isTyping, input, charCount, isSending, o
             {msg.sender === 'bot'
               ? <AngelaAvatar size="sm" />
               : (
-                <div style={{
+                <div aria-hidden="true" style={{
                   width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
                   background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -316,6 +337,7 @@ function ChatView({ userInfo, messages, isTyping, input, charCount, isSending, o
               )
             }
             <div
+              aria-hidden="true"
               style={{
                 padding: '10px 14px', fontSize: 13, lineHeight: 1.6, borderRadius: 16,
                 borderBottomLeftRadius: msg.sender === 'bot' ? 4 : 16,
@@ -331,7 +353,7 @@ function ChatView({ userInfo, messages, isTyping, input, charCount, isSending, o
         ))}
 
         {isTyping && (
-          <div style={{ display: 'flex', gap: 9, alignSelf: 'flex-start', maxWidth: '85%', animation: 'cb-msgIn 0.3s ease both' }}>
+          <div role="status" aria-label="Angela is typing" style={{ display: 'flex', gap: 9, alignSelf: 'flex-start', maxWidth: '85%', animation: 'cb-msgIn 0.3s ease both' }}>
             <AngelaAvatar size="sm" />
             <div style={{
               padding: '12px 16px', borderRadius: 16, borderBottomLeftRadius: 4,
@@ -369,6 +391,7 @@ function ChatView({ userInfo, messages, isTyping, input, charCount, isSending, o
             onChange={onInputChange}
             onKeyDown={onKeyDown}
             rows={1}
+            aria-label="Message Angela"
             placeholder="Message Angela…"
             style={{
               flex: 1, background: 'none', border: 'none', outline: 'none', resize: 'none',
@@ -379,6 +402,8 @@ function ChatView({ userInfo, messages, isTyping, input, charCount, isSending, o
           <button
             onClick={onSend}
             disabled={isSending || !input.trim()}
+            aria-label="Send message"
+            aria-busy={isSending}
             style={{
               width: 34, height: 34, borderRadius: 10, border: 'none', flexShrink: 0,
               background: input.trim() && !isSending
@@ -614,6 +639,7 @@ export default function Chatbot() {
             ref={chatRef}
             role="dialog"
             aria-label="Chat with Angela"
+            aria-modal="true"
             style={{
               position: 'absolute', bottom: 72, right: 0,
               width: 'min(400px, calc(100vw - 20px))',

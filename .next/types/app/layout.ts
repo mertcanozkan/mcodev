@@ -1,4 +1,4 @@
-// File: /Users/mertozkan/Dev/webdev/mco-dev/mertozkan/src/app/layout.jsx
+// File: /Users/mertozkan/Dev/webdev/mco-dev/mcodev/src/app/layout.jsx
 import * as entry from '../../../src/app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

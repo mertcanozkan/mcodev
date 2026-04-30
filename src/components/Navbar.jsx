@@ -107,7 +107,8 @@ export default function Navbar() {
             onClick={() => setMobileOpen(!mobileOpen)}
           className="relative z-50 rounded-lg p-2 text-text-secondary transition-colors hover:text-text-primary md:hidden"
           aria-expanded={mobileOpen}
-          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+          aria-controls="mobile-menu"
+          aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
         >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -116,6 +117,8 @@ export default function Navbar() {
 
       {/* Mobile overlay */}
       <div
+        id="mobile-menu"
+        aria-hidden={!mobileOpen}
         className={`fixed inset-0 z-40 flex flex-col items-center justify-center bg-midnight/95 backdrop-blur-xl transition-all duration-300 md:hidden ${
           mobileOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
         }`}

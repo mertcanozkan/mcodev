@@ -48,8 +48,14 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-midnight">
+      <a
+        href="#main-content"
+        className="fixed left-4 top-4 z-[9999] -translate-y-20 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-midnight transition-transform focus:translate-y-0"
+      >
+        Skip to main content
+      </a>
       <Navbar />
-      <main>
+      <main id="main-content">
         <Hero />
         <About />
         <Stats />

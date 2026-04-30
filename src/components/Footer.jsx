@@ -41,6 +41,7 @@ export default function Footer() {
             <a
               href="#hero"
               onClick={(e) => scrollTo(e, "#hero")}
+              aria-label="MCODev — back to top"
               className="font-display text-xl font-bold tracking-wide text-text-primary"
             >
               MCO<span className="text-accent">Dev</span>
@@ -96,7 +97,7 @@ export default function Footer() {
         <div className="mt-12 flex flex-col items-center gap-2 border-t border-border/30 pt-8 text-xs text-text-muted">
           <p>&copy; {new Date().getFullYear()} MCODev. All rights reserved.</p>
           <p className="flex items-center gap-1">
-            Designed & built with <Heart size={12} className="text-accent" /> in
+            Designed & built with <Heart size={12} className="text-accent" aria-hidden="true" /> in
             London.
           </p>
         </div>
